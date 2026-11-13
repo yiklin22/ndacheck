@@ -36,8 +36,9 @@ train-split answer. F1 per label: yes = Entailment, no = Contradiction.
 ### Why "no" answers are weak
 
 Error analysis on dev (`docs/contradiction-experiments.md`): of 95 gold "no" answers, 44 are right and 51 missed. 20 misses are retrieval
-(the keywords did not reach the annotated clause) and 31 are labelling. The off-the-shelf NLI model does not read "shall not disclose to
-any third party" as contradicting "may share some information with some third parties", and nearly every NDA has such a prohibition:
+(the keywords did not reach the annotated clause) and 31 are labelling. On real clauses, which usually carry exceptions ("without prior written
+consent"), the off-the-shelf NLI model often does not score "shall not disclose to any third party" as contradicting "may share some information
+with some third parties", and nearly every NDA has such a prohibition:
 whether the gold answer is "no" depends on whether a permission exists anywhere else in the document. Three fixes, each fitted on train,
 raised train accuracy (up to 76.6%) but not dev, so they were dropped; the code is on the local branch `experiment/contradiction-fixes`
 (tags `exp-fix1-fix3`, `exp-fix2`). The fix ideas came from reading dev errors, so dev is not a fully clean check for them; none was kept.
@@ -78,8 +79,8 @@ No solicitation of staff                         yes
 3. An NLI model (`cross-encoder/nli-deberta-v3-base`) scores each candidate: does the clause entail or contradict the question's statement
    (e.g. "Receiving Party shall not solicit some of Disclosing Party's representatives.")?
 4. Per-question thresholds, fitted on the ContractNLI train split (`ndacheck/thresholds.json`), turn the scores into yes / no / not
-   mentioned. When no clause clears a threshold, the answer is the question's most common train-split answer, marked "no clear clause,
-   check", with no quote.
+   mentioned. When no clause clears a threshold, the answer is a per-question default also fitted on train (for 14 of 17 questions
+   it is the most common train answer), marked "no clear clause, check", with no quote.
 
 Reproduce the numbers (needs the dataset, see Data):
 

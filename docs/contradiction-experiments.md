@@ -17,8 +17,8 @@ right and misses 51. It also says "No" 17 times when the gold answer is
 |---|---|
 | no candidate clause at all (keywords matched nothing) | 7 |
 | candidates found, but none is an annotated clause | 13 |
-| annotated clause found, model unsure, fell back to the usual answer ("not mentioned") | 13 |
-| annotated clause found, model unsure, fell back to the usual answer ("yes") | 12 |
+| annotated clause found, model unsure, fell back to the question's default answer ("not mentioned") | 13 |
+| annotated clause found, model unsure, fell back to the question's default answer ("yes") | 12 |
 | annotated clause found, model confidently said "yes" | 6 |
 
 So 20 misses are retrieval (wrong or no clauses) and 31 are labelling. By
@@ -28,12 +28,13 @@ identification" (8 of 10) and "Copies allowed" (8 of 8).
 
 Two causes stand out when reading the cases:
 
-1. **The NLI model does not read a prohibition as contradicting a
-   permission.** For "shall not disclose ... to any third party" against
-   "Receiving Party may share some Confidential Information with some
-   third-parties", the off-the-shelf model gives contradiction scores near
-   0.0; the same holds for "shall not copy" against "may create a copy ... in
-   some circumstances".
+1. **The NLI model often misses a prohibition in a real clause.** A bare
+   sentence such as "shall not disclose ... to any third party" is scored as
+   contradicting "Receiving Party may share some Confidential Information
+   with some third-parties", but the long annotated clauses in real NDAs,
+   usually with "without prior written consent" or other exceptions, often
+   get contradiction scores near zero; the same holds for "shall not copy"
+   against "may create a copy ... in some circumstances".
 2. **Keywords miss the "No" clauses of "Keeping a copy after the end".** The
    annotated clauses are "return all copies" clauses that never say "retain"
    or "archive". On train, the keywords reach an annotated clause for 42 of
@@ -74,9 +75,9 @@ shipped system is unchanged.
    permission found". Scored on the cached fix-1 scores; it raised train but
    left dev where fix 1 was.
 
-A fine-tuned model was not tried. Train has 16,655 candidate clause pairs,
-and a training step costs several times a scoring step; on this CPU-only
-machine one epoch would take hours. It is the most likely real fix, because the problem is document-level
+A fine-tuned model was not tried: training on the 16,655 train candidate
+clause pairs on this CPU-only machine was judged too slow for this round (not
+measured). It is the most likely real fix, because the problem is document-level
 (a prohibition and no exception anywhere), which is what the ContractNLI
 paper's trained models learn.
 
