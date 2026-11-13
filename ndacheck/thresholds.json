@@ -1,0 +1,87 @@
+{
+ "nda-1": {
+  "entail": 0.1,
+  "contra": 0.15,
+  "fallback": "NotMentioned"
+ },
+ "nda-2": {
+  "entail": 0.85,
+  "contra": 0.15,
+  "fallback": "NotMentioned"
+ },
+ "nda-3": {
+  "entail": 0.1,
+  "contra": 1.01,
+  "fallback": "Entailment"
+ },
+ "nda-4": {
+  "entail": 0.1,
+  "contra": 1.01,
+  "fallback": "Entailment"
+ },
+ "nda-5": {
+  "entail": 0.1,
+  "contra": 1.01,
+  "fallback": "Entailment"
+ },
+ "nda-7": {
+  "entail": 0.1,
+  "contra": 1.01,
+  "fallback": "Entailment"
+ },
+ "nda-8": {
+  "entail": 0.1,
+  "contra": 1.01,
+  "fallback": "NotMentioned"
+ },
+ "nda-10": {
+  "entail": 0.15,
+  "contra": 1.01,
+  "fallback": "NotMentioned"
+ },
+ "nda-11": {
+  "entail": 0.45,
+  "contra": 1.01,
+  "fallback": "NotMentioned"
+ },
+ "nda-12": {
+  "entail": 0.1,
+  "contra": 1.01,
+  "fallback": "Entailment"
+ },
+ "nda-13": {
+  "entail": 0.1,
+  "contra": 1.01,
+  "fallback": "Entailment"
+ },
+ "nda-15": {
+  "entail": 0.1,
+  "contra": 1.01,
+  "fallback": "Entailment"
+ },
+ "nda-16": {
+  "entail": 0.1,
+  "contra": 1.01,
+  "fallback": "NotMentioned"
+ },
+ "nda-17": {
+  "entail": 0.95,
+  "contra": 0.4,
+  "fallback": "NotMentioned"
+ },
+ "nda-18": {
+  "entail": 0.1,
+  "contra": 1.01,
+  "fallback": "NotMentioned"
+ },
+ "nda-19": {
+  "entail": 0.1,
+  "contra": 0.1,
+  "fallback": "Entailment"
+ },
+ "nda-20": {
+  "entail": 0.1,
+  "contra": 0.2,
+  "fallback": "Entailment"
+ }
+}
