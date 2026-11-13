@@ -1,0 +1,15 @@
+# model (CPU is enough)
+torch
+transformers
+sentencepiece
+protobuf
+# web page and file reading
+fastapi
+uvicorn
+jinja2
+python-multipart
+pdfplumber
+python-docx
+# tests
+pytest
+httpx

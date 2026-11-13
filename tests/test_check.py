@@ -1,4 +1,6 @@
-from ndacheck.check import QUESTIONS, candidates, clauses, decide
+import pytest
+
+from ndacheck.check import QUESTIONS, candidates, check, clauses, decide
 
 NDA = ("1. Confidential Information includes all information disclosed in writing or orally. "
        "2. The Recipient shall use Confidential Information solely for the Purpose. "
@@ -25,3 +27,11 @@ def test_decide_thresholds_and_fallback():
 
 def test_every_question_has_a_keyword_rule():
     assert len(QUESTIONS) == 17 and all(len(v) == 3 for v in QUESTIONS.values())
+
+
+@pytest.mark.slow
+def test_real_model_end_to_end():
+    answers = {a.question: a for a in check(NDA)}
+    assert len(answers) == 17
+    assert answers["nda-18"].label == "Entailment" and "solicit" in answers["nda-18"].evidence
+    assert answers["nda-11"].label == "NotMentioned"
