@@ -57,6 +57,11 @@ What the numbers mean:
 - **Low-confidence answers are marked.** When no clause clears the
   threshold, the CLI says "usual answer for NDAs; no clear clause, check"
   and shows no quote, instead of pointing at an unrelated clause.
+- **Tried and dropped:** keyword rules that force "no" ("whether or not
+  marked", "shall not copy", "without retaining any copies"), switched on per
+  question only when they helped on train. They raised train accuracy
+  (76.0% -> 76.4%) but lowered dev (74.2% -> 73.8%), so they were removed
+  (kept in `git stash` as "dropped contradiction-rule experiment").
 - The ContractNLI paper's models were trained on this data; this is an
   off-the-shelf NLI model plus fitted thresholds, so it is not comparable to
   their numbers and is likely below them.
