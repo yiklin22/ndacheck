@@ -3,6 +3,10 @@
 All numbers on this page come from train and dev only. The test split was
 not used to choose anything.
 
+The fix ideas came from reading the dev errors below, so dev is not a fully
+clean check for them (the keyword coverage figures were measured on train).
+That would matter for a fix that was kept; none was.
+
 ## Error analysis (dev, shipped system)
 
 Dev has 95 gold "No" (Contradiction) answers. The shipped system gets 44
@@ -77,5 +81,8 @@ hours. It is the most likely real fix, because the problem is document-level
 (a prohibition and no exception anywhere), which is what the ContractNLI
 paper's trained models learn.
 
-The code for fixes 1-3 is on the local branch
-`experiment/contradiction-fixes` (fix 3 as `scripts/exp_entail_first.py`).
+The code is on the local branch `experiment/contradiction-fixes`: tag
+`exp-fix1-fix3` is fix 1 (run `scripts/evaluate.py --split train --tune`, then
+`--split dev`) and fix 3 (`scripts/exp_entail_first.py out.json`); tag
+`exp-fix2` is fix 2. Fixes 1 and 3 were re-run from their tag and reproduce
+the table; fix 2's dev row was re-run on its tree before it was committed.

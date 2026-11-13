@@ -39,7 +39,8 @@ Error analysis on dev (`docs/contradiction-experiments.md`): of 95 gold "no" ans
 (the keywords did not reach the annotated clause) and 31 are labelling. The off-the-shelf NLI model does not read "shall not disclose to
 any third party" as contradicting "may share some information with some third parties", and nearly every NDA has such a prohibition:
 whether the gold answer is "no" depends on whether a permission exists anywhere else in the document. Three fixes, each fitted on train,
-raised train accuracy (up to 76.6%) but not dev, so they were dropped; the code is on the local branch `experiment/contradiction-fixes`.
+raised train accuracy (up to 76.6%) but not dev, so they were dropped; the code is on the local branch `experiment/contradiction-fixes`
+(tags `exp-fix1-fix3`, `exp-fix2`). The fix ideas came from reading dev errors, so dev is not a fully clean check for them; none was kept.
 An earlier experiment with keyword rules that force "no" was dropped for the same reason (dev 74.2% -> 73.8%; kept in `git stash`).
 The likely real fix is a model fine-tuned on ContractNLI, which this CPU-only project did not do.
 
