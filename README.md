@@ -51,14 +51,14 @@ git clone <this repo> && cd ndacheck
 uv venv && uv pip install -r requirements.txt     # or: python -m venv .venv && .venv/bin/pip install -r requirements.txt
 source .venv/bin/activate
 
-python -m ndacheck my_nda.txt          # CLI; add --json for machine-readable output
+python -m ndacheck examples/sample_nda.txt   # CLI on any .txt NDA; add --json for machine-readable output
 uvicorn ndacheck.app:app --port 8850   # web page at http://localhost:8850: paste text or upload .pdf (with a text layer), .docx, .txt
 pytest -q -m "not slow"                # fast tests (what CI runs); plain `pytest -q` also runs the model end to end
 ```
 
 The first run downloads the NLI model (`cross-encoder/nli-deberta-v3-base`, about 0.7 GB) from Hugging Face.
 
-CLI output (excerpt):
+CLI output on `examples/sample_nda.txt` (a three-clause test NDA; excerpt):
 
 ```
 Verbal information included                      yes
@@ -66,6 +66,9 @@ Verbal information included                      yes
 Limited use                                      yes
     "2. The Recipient shall use Confidential Information solely for the Purpose."
 Sharing with employees                           yes  (usual answer for NDAs; no clear clause, check)
+...
+No solicitation of staff                         yes
+    "3. For one year the Recipient shall not solicit or hire any employee of the Discloser."
 ```
 
 ## How it works

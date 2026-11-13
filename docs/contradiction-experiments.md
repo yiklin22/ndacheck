@@ -74,10 +74,9 @@ shipped system is unchanged.
    permission found". Scored on the cached fix-1 scores; it raised train but
    left dev where fix 1 was.
 
-A fine-tuned model was not tried. Train has 16,655 candidate clause pairs;
-scoring ran at about 5 pairs per second on this CPU (a dev run that scored 773 new pairs took 143 s), and
-a training step costs several times a scoring step, so one epoch would take
-hours. It is the most likely real fix, because the problem is document-level
+A fine-tuned model was not tried. Train has 16,655 candidate clause pairs,
+and a training step costs several times a scoring step; on this CPU-only
+machine one epoch would take hours. It is the most likely real fix, because the problem is document-level
 (a prohibition and no exception anywhere), which is what the ContractNLI
 paper's trained models learn.
 
