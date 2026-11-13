@@ -5,3 +5,4 @@ data/raw/
 .pytest_cache/
 .env
 *.db
+models/
