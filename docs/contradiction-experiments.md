@@ -33,8 +33,10 @@ Two causes stand out when reading the cases:
    contradicting "Receiving Party may share some Confidential Information
    with some third-parties", but the long annotated clauses in real NDAs,
    usually with "without prior written consent" or other exceptions, often
-   get contradiction scores near zero; the same holds for "shall not copy"
-   against "may create a copy ... in some circumstances".
+   get contradiction scores near zero. For "Copies allowed" it is worse: even
+   a bare "shall not copy" sentence scores near zero against "Receiving Party
+   may create a copy of some Confidential Information in some
+   circumstances", and so do most annotated clauses.
 2. **Keywords miss the "No" clauses of "Keeping a copy after the end".** The
    annotated clauses are "return all copies" clauses that never say "retain"
    or "archive". On train, the keywords reach an annotated clause for 42 of
