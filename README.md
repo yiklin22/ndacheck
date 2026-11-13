@@ -10,6 +10,11 @@ unlimited term, and a lawyer's review costs more than the deal is worth at
 that stage. ndacheck gives a first pass in seconds: each answer comes with
 the clause it was read from, so a person checks only the flagged points.
 
+![ndacheck page](docs/screenshot.png)
+
+Page: `uvicorn ndacheck.app:app --port 8850` (paste, or upload .pdf with a
+text layer, .docx or .txt). CLI: `python -m ndacheck nda.txt`.
+
 ## How it works
 
 1. Split the NDA into clauses.
@@ -22,7 +27,7 @@ the clause it was read from, so a person checks only the flagged points.
    question's most common train-split answer.
 
 ```bash
-uv venv && uv pip install torch transformers sentencepiece protobuf pytest
+uv venv && uv pip install torch transformers sentencepiece protobuf fastapi uvicorn jinja2 python-multipart pdfplumber python-docx pytest httpx
 python -m ndacheck my_nda.txt          # or --json
 pytest -q
 ```
@@ -38,7 +43,10 @@ pytest -q
 | test (123) | most common train answer per question | 65.9% | 0.617 | 0.730 | 0.506 | 0.614 |
 
 Test was run once, after thresholds were fitted on train and checked on
-dev. Per question (`docs/results-test.md`), ndacheck beats the baseline on
+dev. Those runs used ContractNLI's own clause boundaries. The page and CLI
+split clauses themselves, so both splits were also scored that way (same
+thresholds): dev 74.5%, **test 74.1%** accuracy, macro-F1 0.685, so the
+splitter does not cost accuracy. Per question (`docs/results-test.md`), ndacheck beats the baseline on
 15 of 17, ties on "sharing with third parties", and is behind on "limited
 use" (80% vs 84%). Biggest gains: "keeping a copy after the end" (57% vs
 24%), "verbal information" (80% vs 59%), "independent development" (74% vs

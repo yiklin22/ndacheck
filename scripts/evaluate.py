@@ -28,15 +28,15 @@ def load(split):
     return d["documents"]
 
 
-def scored(split):
-    cache = ROOT / ".cache" / f"{split}-scores.json"
+def scored(split, own=False):
+    cache = ROOT / ".cache" / f"{split}-scores{'-own' if own else ''}.json"
     if cache.exists():
         return json.loads(cache.read_text())
     out = {}
     docs = load(split)
     for n, doc in enumerate(docs):
         text = doc["text"]
-        bounds = clauses(text, doc["spans"])
+        bounds = clauses(text, None if own else doc["spans"])
         for q in QUESTIONS:
             c = candidates(text, bounds, q)
             idx = [bounds.index(b) for b in c]
@@ -78,8 +78,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", choices=["train", "dev", "test"], default="dev")
     ap.add_argument("--tune", action="store_true", help="fit thresholds per question on this split (use train)")
+    ap.add_argument("--own-clauses", action="store_true",
+                    help="split clauses with ndacheck's own splitter (as the app does) instead of ContractNLI's spans")
     a = ap.parse_args()
-    docs, sc = load(a.split), scored(a.split)
+    docs, sc = load(a.split), scored(a.split, a.own_clauses)
     if a.tune:
         grid = [x / 20 for x in range(2, 20)] + [1.01]
         th = {}
@@ -105,7 +107,7 @@ def main():
     bacc = sum(g == p for g, p in zip(gold, base)) / len(rows)
     f, bf = f1s(gold, pred), f1s(gold, base)
     ev_rows = [(ev, gs) for _, g, p, ev, gs in rows if p == g and p != "NotMentioned"]
-    ev_hit = sum(ev in gs for ev, gs in ev_rows) / max(1, len(ev_rows))
+    ev_hit = sum(ev in gs for ev, gs in ev_rows) / max(1, len(ev_rows)) if not a.own_clauses else float("nan")
     lines = [f"# ndacheck on ContractNLI {a.split} ({len(docs)} NDAs, {len(rows)} question answers)", "",
              "| | accuracy | macro-F1 | F1 Entailment | F1 Contradiction | F1 NotMentioned |", "|---|---|---|---|---|---|",
              f"| ndacheck | {acc:.1%} | {sum(f.values()) / 3:.3f} | {f['Entailment']:.3f} | {f['Contradiction']:.3f} | {f['NotMentioned']:.3f} |",
@@ -120,7 +122,7 @@ def main():
                      f"{c['Entailment']} / {c['Contradiction']} / {c['NotMentioned']} |")
     out = "\n".join(lines) + "\n"
     print(out)
-    (ROOT / f"docs/results-{a.split}.md").write_text(out)
+    (ROOT / f"docs/results-{a.split}{'-own-clauses' if a.own_clauses else ''}.md").write_text(out)
 
 
 if __name__ == "__main__":

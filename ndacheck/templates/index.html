@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ndacheck</title>
+<style>
+  :root { --ink:#1b1f24; --muted:#5b6470; --line:#d8dde3; --bg:#fbfbfa; --yes:#1d6b3a; --no:#a11d1d; --nm:#5b6470; --accent:#1f5fbf; }
+  @media (prefers-color-scheme: dark) { :root { --ink:#e8eaed; --muted:#9aa3ad; --line:#3a4048; --bg:#16191d; --yes:#6fd393; --no:#ff8a8a; --nm:#9aa3ad; --accent:#7fb0ff; } }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; } .lede, .muted { color: var(--muted); }
+  textarea { width: 100%; box-sizing: border-box; min-height: 140px; font: 14px/1.45 ui-monospace, monospace; color: var(--ink);
+             background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+  button { font: inherit; padding: 8px 16px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+  .row { display: flex; gap: 12px; align-items: center; margin: 10px 0 24px; flex-wrap: wrap; }
+  table { border-collapse: collapse; width: 100%; } td, th { border-bottom: 1px solid var(--line); padding: 8px; text-align: left; vertical-align: top; }
+  .yes { color: var(--yes); font-weight: 600; } .no { color: var(--no); font-weight: 600; } .nm { color: var(--nm); }
+  blockquote { margin: 4px 0 0; padding-left: 10px; border-left: 3px solid var(--line); color: var(--muted); font-size: 14px; }
+  .unsure { font-size: 13px; color: var(--muted); }
+</style></head>
+<body><main>
+<h1>ndacheck</h1>
+<p class="lede">A first pass over an NDA: 17 standard questions, each with the clause it was read from.
+It is right about 3 times in 4 on held-out NDAs, and weakest on "No" answers, so read the flagged clauses yourself.</p>
+<form method="post" action="/" enctype="multipart/form-data">
+  <textarea name="text" placeholder="Paste the NDA">{{ text }}</textarea>
+  <div class="row"><input type="file" name="file" accept=".pdf,.docx,.txt"><button type="submit">Check</button></div>
+</form>
+{% if error %}<p role="alert"><strong>Could not check it:</strong> {{ error }}</p>{% endif %}
+{% if answers %}
+<table>
+<tr><th>Question</th><th>Answer</th></tr>
+{% for a in answers %}
+<tr><td>{{ a.name }}</td>
+<td><span class="{{ 'yes' if a.label == 'Entailment' else 'no' if a.label == 'Contradiction' else 'nm' }}">{{ a.say }}</span>
+{% if not a.confident %}<div class="unsure">Usual answer for NDAs; no clear clause found. Check.</div>{% endif %}
+{% if a.evidence %}<blockquote>{{ a.evidence[:400] }}{% if a.evidence|length > 400 %}…{% endif %}</blockquote>{% endif %}</td></tr>
+{% endfor %}
+</table>
+{% endif %}
+</main></body></html>
