@@ -1,6 +1,6 @@
 """Score ndacheck on ContractNLI (Koreeda & Manning 2021, CC BY 4.0).
 
-  python scripts/evaluate.py --split dev  [--tune]   # --tune: fit thresholds per question on dev
+  python scripts/evaluate.py --split train --tune   # fit thresholds per question on train
   python scripts/evaluate.py --split test             # uses ndacheck/thresholds.json
 
 NLI scores are cached per (split, document, question, clause) in .cache, so

@@ -3,7 +3,7 @@
 For each question: keywords pick the candidate clauses, an NLI model
 (cross-encoder/nli-deberta-v3-base, Apache-2.0, CPU) scores each clause as
 entailing or contradicting the question's statement, and thresholds tuned on
-the ContractNLI dev split turn the best scores into one answer:
+the ContractNLI train split turn the best scores into one answer:
 
   yes  (Entailment)    - the NDA says it, with the clause as evidence
   no   (Contradiction) - the NDA says the opposite
